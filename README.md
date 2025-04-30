@@ -36,16 +36,16 @@ This is a simple and responsive user management system built with **React**, **T
 ```bash
 git clone https://github.com/your-username/user-management-app.git
 cd user-management-app
-
-**### 2. Install Dependencies**
+---
+### 2. Install Dependencies
 
 ```bash
 npm install
-
-**### 3. Start the Development Server**
+---
+### 3. Start the Development Server
 npm run dev
 
-###**Test Credentials**###
+###Test Credentials
 Use the following to log in:
 
 Email: eve.holt@reqres.in
