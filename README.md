@@ -36,7 +36,7 @@ Use the following to log in:
   
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/user-management-app.git
+git clone https://github.com/basicladyprogrammer/user-management-react-task.git
 cd user-management-app
 npm install
 npm run dev
