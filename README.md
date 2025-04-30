@@ -28,21 +28,15 @@ This is a simple and responsive user management system built with **React**, **T
 
 ## 🛠️ How to Run the Project Locally
 
-### 1. Clone the Repository
-``` ``
-git clone https://github.com/your-username/user-management-app.git
-cd user-management-app ````
-
-### 2. Install Dependencies
-``` ``
-npm install ````
-
-### 3. Start the Development Server
-``` ``
-npm run dev ````
-
 ### Test Credentials
 Use the following to log in:
   
-  Email: eve.holt@reqres.in
-  Password: cityslicka
+  -Email: eve.holt@reqres.in
+  -Password: cityslicka
+  
+### 1. Clone the Repository
+```bash
+git clone https://github.com/your-username/user-management-app.git
+cd user-management-app
+npm install
+npm run dev
