@@ -100,28 +100,19 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="w-screen  overflow-y-auto p-6 bg-gray-50">
+    <div className="w-screen  overflow-y-auto p-6 bg-gradient-to-br from-purple-100 to-purple-300">
       <div className="max-w-5xl w-full overflow-y-auto px-4 mx-auto">
-        {/* <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">User Dashboard</h1>
-          <button
-            onClick={() => setShowForm(!showForm)}
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-            {showForm ? "Cancel" : "Add New User"}
-          </button>
-        </div> */}
-
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">User Dashboard</h1>
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
+          <h1 className="text-2xl font-bold text-purple-700">User Dashboard</h1>
           <div className="flex gap-2">
             <button
               onClick={() => setShowForm(!showForm)}
-              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700  hover:border-green-600">
               {showForm ? "Cancel" : "Add New User"}
             </button>
             <button
               onClick={handleLogout}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 hover:border-red-500">
               Logout
             </button>
           </div>
@@ -132,7 +123,7 @@ const Dashboard = () => {
           placeholder="Search by name or email..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full p-2 mb-2 border rounded"
+          className="w-full bg-purple-50 p-2 mb-2 border rounded"
         />
 
         {showForm && (
@@ -156,7 +147,7 @@ const Dashboard = () => {
             />
             <button
               type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+              className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
               Submit
             </button>
           </form>
@@ -165,8 +156,8 @@ const Dashboard = () => {
         {loading ? (
           <p className="text-gray-600">Loading users...</p>
         ) : (
-          <table className="w-full table-auto bg-white shadow-md rounded overflow-hidden">
-            <thead className="bg-blue-100 text-left">
+          <table className="w-full table-auto bg-purple-50 shadow-md rounded overflow-hidden">
+            <thead className="bg-purple-400 text-left">
               <tr>
                 <th className="p-3">Avatar</th>
                 <th className="p-3">Name</th>
@@ -197,7 +188,7 @@ const Dashboard = () => {
         <div className="flex justify-center gap-2 mt-4 flex-wrap">
           <button
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-            className="px-3 py-1 rounded bg-gray-300 disabled:opacity-50"
+            className="px-3 py-1 rounded bg-white-300 disabled:opacity-50"
             disabled={page === 1}>
             Previous
           </button>
@@ -207,7 +198,7 @@ const Dashboard = () => {
               key={pg}
               onClick={() => setPage(pg)}
               className={`px-3 py-1 rounded border ${
-                page === pg ? "bg-blue-600 text-white" : "bg-white"
+                page === pg ? "bg-purple-600 text-white" : "bg-white"
               }`}>
               {pg}
             </button>
@@ -215,7 +206,7 @@ const Dashboard = () => {
 
           <button
             onClick={() => setPage((prev) => prev + 1)}
-            className="px-3 py-1 rounded bg-gray-300">
+            className="px-3 py-1 rounded bg-white-300">
             Next
           </button>
         </div>
