@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
@@ -6,6 +7,15 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [newUser, setNewUser] = useState({ name: "", job: "" });
+  const [formError, setFormError] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
 
   const fetchUsers = async (pageNum) => {
     setLoading(true);
@@ -27,6 +37,50 @@ const Dashboard = () => {
     fetchUsers(page);
   }, [page]);
 
+  const handleAddUser = async (e) => {
+    e.preventDefault();
+    setFormError("");
+
+    if (!newUser.name || !newUser.job) {
+      setFormError("All fields are required.");
+      return;
+    }
+
+    try {
+      const res = await fetch("https://reqres.in/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": "reqres-free-v1",
+        },
+        body: JSON.stringify(newUser),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        const nameParts = newUser.name.trim().split(" ");
+        const newAddedUser = {
+          id: Date.now(), // temporary ID
+          email: `${nameParts[0] || "new"}@reqres.in`,
+          avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(
+            newUser.name
+          )}&background=random`,
+
+          first_name: nameParts[0] || newUser.name,
+          last_name: nameParts[1] || "",
+        };
+        setUsers((prev) => [newAddedUser, ...prev]);
+        setNewUser({ name: "", job: "" });
+        setShowForm(false);
+      } else {
+        setFormError("Failed to add user");
+      }
+    } catch (err) {
+      setFormError("Network error");
+    }
+  };
+
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       const filtered = users.filter((user) =>
@@ -40,10 +94,39 @@ const Dashboard = () => {
     return () => clearTimeout(delayDebounce);
   }, [search, users]);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) navigate("/");
+  }, []);
+
   return (
     <div className="w-screen  overflow-y-auto p-6 bg-gray-50">
       <div className="max-w-5xl w-full overflow-y-auto px-4 mx-auto">
-        <h1 className="text-2xl font-bold mb-2">User Dashboard</h1>
+        {/* <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-bold">User Dashboard</h1>
+          <button
+            onClick={() => setShowForm(!showForm)}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+            {showForm ? "Cancel" : "Add New User"}
+          </button>
+        </div> */}
+
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-bold">User Dashboard</h1>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setShowForm(!showForm)}
+              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+              {showForm ? "Cancel" : "Add New User"}
+            </button>
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+              Logout
+            </button>
+          </div>
+        </div>
+
         <input
           type="text"
           placeholder="Search by name or email..."
@@ -51,6 +134,33 @@ const Dashboard = () => {
           onChange={(e) => setSearch(e.target.value)}
           className="w-full p-2 mb-2 border rounded"
         />
+
+        {showForm && (
+          <form
+            onSubmit={handleAddUser}
+            className="bg-white p-4 rounded shadow mb-4 space-y-2">
+            {formError && <p className="text-red-500 text-sm">{formError}</p>}
+            <input
+              type="text"
+              placeholder="Name"
+              value={newUser.name}
+              onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+            <input
+              type="text"
+              placeholder="Job"
+              value={newUser.job}
+              onChange={(e) => setNewUser({ ...newUser, job: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+              Submit
+            </button>
+          </form>
+        )}
 
         {loading ? (
           <p className="text-gray-600">Loading users...</p>
